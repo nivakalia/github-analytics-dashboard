@@ -12,6 +12,8 @@ router = APIRouter(prefix="/ingest",tags=["Ingestion"])
 @router.post("/fetch/{owner}/{repo}")
 def fetch_repository(owner: str,repo: str,db: Session = Depends(get_db)):
     data = get_repo(owner, repo)
+    if "id" not in data:
+        return {"error": data}
     repository = Repository(
         id=data["id"],
         name=data["name"],
@@ -39,6 +41,8 @@ def fetch_repository(owner: str,repo: str,db: Session = Depends(get_db)):
 def fetch_commits(owner: str,repo: str,db: Session = Depends(get_db)):
     commits = get_commits(owner, repo)
     count = 0
+    if not isinstance(commits, list):
+        return { "error": commits }    
     for item in commits:
         sha = item["sha"]
         existing = db.query(Commit).filter(Commit.sha == sha).first()
@@ -63,12 +67,16 @@ def fetch_prs(owner: str,repo: str,db: Session = Depends(get_db)):
     repo_data = get_repository(db,owner,repo)
     if not repo_data:
         return {"message":"Repository not found"}
-    prs = get_pull_requests(owner,repo)
     count = 0
+    prs = get_pull_requests(owner, repo)
+    if not isinstance(prs, list):
+        return { "message": "PR data unavailable", "details": prs}
+    
     for item in prs:
-        existing = db.query(PullRequest).filter(
-            PullRequest.pr_number == item["number"]).first()
-        if existing: continue
+        pr_number = item["number"]
+        existing = (db.query(PullRequest).filter(PullRequest.pr_number == pr_number,PullRequest.repository_id == repo_data.id).first())
+        if existing:
+            continue
         pr = PullRequest(
             pr_number=item["number"],
             repository_id=repo_data.id,
@@ -92,11 +100,13 @@ def fetch_issues(owner: str,repo: str,db: Session = Depends(get_db)):
         return {"message":"Repository not found"}
     issues = get_issues(owner,repo)
     count = 0
+    if not isinstance(issues, list):
+        return { "message": "PR data unavailable", "details": issues}
+    
     for item in issues:
         if "pull_request" in item:
             continue
-        existing = db.query(Issue).filter(
-            Issue.issue_number ==item["number"]).first()
+        existing = db.query(Issue).filter(Issue.issue_number ==item["number"],Issue.repository_id == repo_data.id).first()
         if existing:continue
 
         issue = Issue(
@@ -121,18 +131,24 @@ def fetch_contributors(owner: str,repo: str,db: Session = Depends(get_db)):
         return {"message":"Repository not found"}
     contributors = get_contributors(owner,repo)
     count = 0
+    if not isinstance(contributors, list):
+        return { "message": "PR data unavailable", "details": contributors}
+    
     for item in contributors:
-        existing = db.query(Contributor).filter(Contributor.id == item["id"]).first()
+        existing = db.query(Contributor).filter(
+    Contributor.github_user_id == item["id"],
+    Contributor.repository_id == repo_data.id
+).first()
         if existing:
             continue
         contributor = Contributor(
-            id=item["id"],
-            repository_id=repo_data.id,
-            login=item["login"],
-            contributions=item["contributions"],
-            avatar_url=item["avatar_url"],
-            profile_url=item["html_url"]
-        )
+        github_user_id=item["id"],
+        repository_id=repo_data.id,
+        login=item["login"],
+        contributions=item["contributions"],
+        avatar_url=item["avatar_url"],
+        profile_url=item["html_url"]
+    )
         db.add(contributor)
         count += 1
     db.commit()
@@ -146,11 +162,11 @@ def fetch_releases(owner: str,repo: str,db: Session = Depends(get_db)):
     releases = get_releases(owner,repo)
     count = 0
     for item in releases:
-        existing = db.query(Release).filter(Release.id == item["id"]).first()
+        existing = db.query(Release).filter(Release.github_release_id == item["id"],Release.repository_id == repo_data.id).first()        
         if existing:
             continue
         release = Release(
-            id=item["id"],
+            github_release_id=item["id"],
             repository_id=repo_data.id,
             tag_name=item["tag_name"],
             release_name=item["name"],

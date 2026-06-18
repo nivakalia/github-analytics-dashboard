@@ -30,7 +30,8 @@ class Commit(Base):
 
 class PullRequest(Base):
     __tablename__ = "pull_requests"
-    pr_number = Column(Integer, primary_key=True)
+    id = Column(Integer,primary_key=True,autoincrement=True)
+    pr_number = Column(Integer)
     repository_id = Column(Integer,ForeignKey("repositories.id"))
     title = Column(String)
     state = Column(String)
@@ -41,7 +42,8 @@ class PullRequest(Base):
 
 class Issue(Base):
     __tablename__ = "issues"
-    issue_number = Column(Integer,primary_key=True)
+    id = Column(Integer,primary_key=True,autoincrement=True)
+    issue_number = Column(Integer)
     repository_id = Column(Integer,ForeignKey("repositories.id"))
     title = Column(String)
     state = Column(String)
@@ -62,7 +64,8 @@ class Contributor(Base):
 
 class Release(Base):
     __tablename__ = "releases"
-    id = Column(Integer, primary_key=True)
+    r_id = Column(Integer,primary_key=True,autoincrement=True)
+    github_release_id = Column(Integer)
     repository_id = Column(Integer,ForeignKey("repositories.id"))
     tag_name = Column(String)
     release_name = Column(String)

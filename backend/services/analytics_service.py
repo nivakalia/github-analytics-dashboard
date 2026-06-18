@@ -14,13 +14,10 @@ def get_repository_activity(owner: str,repo: str,db: Session = Depends(get_db)):
     last_30_days = datetime.now(timezone.utc) - timedelta(days=30)
     recent_commits = 0
     monthly_trend = {}
-    print("Repository:", repo_data)
-    print("Commits Found:", len(commits))
     for commit in commits:
         commit_date = datetime.fromisoformat(commit.commit_date.replace("Z","+00:00"))
         month = commit_date.strftime("%Y-%m")
         monthly_trend[month] = (monthly_trend.get(month, 0)+ 1)
-        print(commit.commit_date)
         if commit_date >= last_30_days:
             recent_commits += 1
     return {

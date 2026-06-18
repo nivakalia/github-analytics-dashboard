@@ -7,9 +7,9 @@ from database import get_db
 from models import Repository, Commit, PullRequest, Issue, Contributor, Release
 from datetime import datetime, timedelta, timezone
 
-router = APIRouter(prefix="/analytics",tags=["Analytics"])
+router = APIRouter()
 
-@router.get("/repository-activity/{owner}/{repo}")
+@router.get("/analytics/repository-activity/{owner}/{repo}")
 def repository_activity(owner: str,repo: str,db: Session = Depends(get_db)):
     repo_data = get_repository(db,owner,repo)
     if not repo_data: return {"message":"Repository not found"}
