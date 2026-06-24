@@ -19,6 +19,14 @@ def repository_activity(owner: str,repo: str,db: Session = Depends(get_db)):
     last_30_days = datetime.now(timezone.utc) - timedelta(days=30)
     recent_commits = 0
     monthly_trend = {}
+    if recent_commits > 500:
+        activity_level = "Very High"
+    elif recent_commits > 100:
+        activity_level = "High"
+    elif recent_commits > 20:
+        activity_level = "Moderate"
+    else:
+        activity_level = "Low"
     print("Repository:", repo_data)
     print("Commits Found:", len(commits))
     for commit in commits:
@@ -28,12 +36,20 @@ def repository_activity(owner: str,repo: str,db: Session = Depends(get_db)):
         print(commit.commit_date)
         if commit_date >= last_30_days:
             recent_commits += 1
+    summary = (
+    f"{activity_level} development activity "
+    f"with {recent_commits} commits "
+    f"from {active_contributors} "
+    f"contributors in the last 30 days."
+)
     return {
         "repository": repo,
         "total_commits": total_commits,
         "active_contributors":active_contributors,
         "commits_last_30_days":recent_commits,
-        "monthly_commit_trend":monthly_trend
+        "monthly_commit_trend":monthly_trend,
+        "activity_level": activity_level,
+        "development_summary": summary
     }
 
 @router.get("/analytics/pr-insights/{owner}/{repo}")
@@ -47,19 +63,26 @@ def pr_insights(owner: str,repo: str,db: Session = Depends(get_db)):
     merged_prs = 0
     total_merge_time = 0
     merged_count = 0
+    total_closed_time=0
     for pr in prs:
+        created = datetime.fromisoformat(pr.created_at.replace("Z","+00:00"))
         if pr.state == "open":
             open_prs += 1
         else:
+            closed=datetime.fromisoformat(pr.closed_at.replace("Z","+00:00"))
+            close_time = (closed - created).total_seconds()
+            total_closed_time+=close_time
             closed_prs += 1
         if pr.merged_at:
             merged_prs += 1
-            created = datetime.fromisoformat(pr.created_at.replace("Z","+00:00"))
             merged = datetime.fromisoformat(pr.merged_at.replace("Z","+00:00"))
             merge_time = (merged - created).total_seconds()
             total_merge_time += merge_time
             merged_count += 1
     average_merge_time = 0
+    average_close_time=0
+    if closed_prs>0:
+        average_close_time = (total_closed_time /closed_prs /3600)
     if merged_count > 0:
         average_merge_time = (total_merge_time /merged_count /3600)
     return {
@@ -68,7 +91,8 @@ def pr_insights(owner: str,repo: str,db: Session = Depends(get_db)):
         "open_prs": open_prs,
         "closed_prs": closed_prs,
         "merged_prs": merged_prs,
-        "average_merge_time_hours":round(average_merge_time,2)
+        "average_merge_time_hours":round(average_merge_time,2),
+        "average_close_time_hours":round(average_close_time, 2)
     }
 
 @router.get("/analytics/issues/{owner}/{repo}")
@@ -173,6 +197,18 @@ def repository_health(owner: str,repo: str,db: Session = Depends(get_db)):
     elif health_score >= 60: status = "Good"
     elif health_score >= 40: status = "Fair"
     else: status = "Needs Attention"
+    releases = db.query(Release).filter(Release.repository_id == repo_data.id).all()
+    release_count = len(releases)
+
+    if release_count >= 20:
+        release_frequency = "Frequent"
+    elif release_count >= 5:
+        release_frequency = "Regular"
+    elif release_count > 0:
+        release_frequency = "Occasional"
+    else:
+        release_frequency = "No Releases"
+
     return {
         "repository": repo,
         "health_score":round(health_score,2),
@@ -182,5 +218,6 @@ def repository_health(owner: str,repo: str,db: Session = Depends(get_db)):
             "pr_score":round(pr_score, 2),
             "issue_score":round(issue_score, 2),
             "contributor_score":round(contributor_score, 2)
-        }
+        },
+        "release_frequency": release_frequency,
     }

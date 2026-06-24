@@ -38,19 +38,26 @@ def get_pr_insights(owner: str,repo: str,db: Session = Depends(get_db)):
     merged_prs = 0
     total_merge_time = 0
     merged_count = 0
+    total_closed_time=0
     for pr in prs:
+        created = datetime.fromisoformat(pr.created_at.replace("Z","+00:00"))
         if pr.state == "open":
             open_prs += 1
         else:
+            closed=datetime.fromisoformat(pr.closed_at.replace("Z","+00:00"))
+            close_time = (closed - created).total_seconds()
+            total_closed_time+=close_time
             closed_prs += 1
         if pr.merged_at:
             merged_prs += 1
-            created = datetime.fromisoformat(pr.created_at.replace("Z","+00:00"))
             merged = datetime.fromisoformat(pr.merged_at.replace("Z","+00:00"))
             merge_time = (merged - created).total_seconds()
             total_merge_time += merge_time
             merged_count += 1
     average_merge_time = 0
+    average_close_time=0
+    if closed_prs>0:
+        average_close_time = (total_closed_time /closed_prs /3600)
     if merged_count > 0:
         average_merge_time = (total_merge_time /merged_count /3600)
     return {
@@ -59,7 +66,8 @@ def get_pr_insights(owner: str,repo: str,db: Session = Depends(get_db)):
         "open_prs": open_prs,
         "closed_prs": closed_prs,
         "merged_prs": merged_prs,
-        "average_merge_time_hours":round(average_merge_time,2)
+        "average_merge_time_hours":round(average_merge_time,2),
+        "average_close_time_hours":round(average_close_time, 2)
     }
 
 def get_issue_insights(owner: str,repo: str,db: Session = Depends(get_db)):
