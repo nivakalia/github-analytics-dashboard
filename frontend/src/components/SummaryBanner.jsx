@@ -9,7 +9,7 @@ function SummaryBanner({
 
         <div
             style={{
-                background: "#f5f5f5",
+                background: "#D7F1C6",
                 padding: "25px",
                 borderRadius: "12px",
                 marginBottom: "30px"

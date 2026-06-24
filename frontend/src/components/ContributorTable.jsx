@@ -4,12 +4,10 @@ function ContributorTable({ contributors }) {
 
         <div
             style={{
-                maxWidth: "1200px",
-                margin: "0 auto",
+                maxWidth: "500px",
                 padding: "30px"
             }}
         >
-
             <table
                 style={{
                     width: "100%",
@@ -22,10 +20,9 @@ function ContributorTable({ contributors }) {
 
                     <tr
                         style={{
-                            backgroundColor: "#f3f4f6"
+                            backgroundColor: "#D7F1C6"
                         }}
                     >
-
                         <th
                             style={{
                                 padding: "12px"
@@ -74,7 +71,6 @@ function ContributorTable({ contributors }) {
                                 "1px solid #ddd"
                             }}
                         >
-
                             <td
                                 style={{
                                     padding: "12px"

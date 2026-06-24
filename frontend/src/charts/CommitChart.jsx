@@ -13,8 +13,9 @@ function CommitChart({ data }) {
     return (
 
         <ResponsiveContainer
-            width="90%"
+            width="100%"
             height={300}
+            
         >
 
             <LineChart data={data}>
@@ -32,6 +33,8 @@ function CommitChart({ data }) {
                 <Line
                     type="monotone"
                     dataKey="commits"
+                    stroke="#335E17"
+
                 />
 
             </LineChart>

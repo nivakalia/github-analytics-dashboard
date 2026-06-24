@@ -1,4 +1,4 @@
-function StatCard({ title, value }) {
+function StatCardg({ title, value }) {
 
     return (
         <div
@@ -6,10 +6,9 @@ function StatCard({ title, value }) {
                 padding: "20px",
                 width: "200px",
                 margin: "10px",
-                background: "#f5f5f5",
+                background: "#D7F1C6",
                 alignContent:"center",
                 borderRadius: "12px"
-
 
             }}
         >
@@ -19,4 +18,4 @@ function StatCard({ title, value }) {
     );
 }
 
-export default StatCard;
+export default StatCardg;

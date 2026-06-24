@@ -5,7 +5,15 @@ import CommitChart from "../charts/CommitChart";
 import ContributorTable from "../components/ContributorTable";
 import IssueBanner from "../components/IssueBanner";
 import SummaryBanner from "../components/SummaryBanner";
-import PRBanner from "../components/PRBanner";
+import IssueChart from "../charts/IssueChart";
+import IssuePieChart from "../charts/IssuePieChart";
+import PRpieChart from "../charts/PRpieChart";
+import ContributorPieChart from "../charts/ContributorPieChart";
+import HealthBar from "../components/HealthBar";
+import StatCard from "../components/StatCard";
+import StatCardg from "../components/StatCardg";
+import HealthSection from "../components/HealthSection";
+
 
 function DashboardPage() {
 
@@ -104,24 +112,11 @@ function DashboardPage() {
 
         return <h1>{error}</h1>;
     }
-    const commitTrendData =
-    repoActivity
-    ?
-    Object.entries(
-        repoActivity.monthly_commit_trend
-    ).map(
+    const commitTrendData =repoActivity?Object.entries(repoActivity.monthly_commit_trend).map(
+        ([month, commits]) => ({month,commits})):[];
 
-        ([month, commits]) => ({
-
-            month,
-
-            commits
-
-        })
-
-    )
-    :
-    [];
+    const IssueTrendData =repoActivity?Object.entries(issueInsights.monthly_issue_trend).map(
+        ([month, issues]) => ({month,issues})):[];
 
     return (
 
@@ -160,14 +155,35 @@ function DashboardPage() {
 
             />
             
+                
+            <h2>
+            Contributor Insights
+            </h2>
+            <div
+                style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(2, 1fr)",
+                    gap: "20px"
+                }}>
 
+            <ContributorPieChart
+                data={contributors.top_contributors}
+            />
 
+            <ContributorTable
+                contributors={
+                    contributors.top_contributors
+                }
+            />
+            
+                </div>
+                <h2> </h2>
                 <h2>
                     Commit Trend
                 </h2>
                 <div
                     style={{
-                        width: "90%",
+                        width: "100%",
                         height: "350px"
                     }}
                 >
@@ -176,29 +192,104 @@ function DashboardPage() {
                     />
 
                 </div>
+                <div
+                    style={{
+                        background:"#f8f9fa",
+                        padding:"20px",
+                        borderRadius:"12px",
+                        marginTop:"20px"
+                    }}
+                >
 
-                <h2>
-                Top Contributors
-                </h2>
+                <h3>
+                Overall Development Summary
+                </h3>
 
+                <p>
                 {
-                contributors?.top_contributors && (
+                repoActivity
+                ?.development_summary
+                }
+                </p>
 
-                <ContributorTable
-                    contributors={
-                        contributors.top_contributors
-                    }
-                />
+                </div>
 
-                )}
                     <h2>    
                     </h2>
+                    <h2>
+                    PR Analytics
+                    </h2>
+                    
                     <div
-            style={{
-                margin: "0 auto",
-                padding: "30px"
-            }}
-        >
+                        style={{
+                            display: "flex",
+                            alignItems: "stretch",
+                        }}
+                    >
+                        <div
+                            style={{
+                                flex: 1,
+                                padding: "20px"
+                            }}
+                        >
+                            <PRpieChart data={prInsights} />
+                        </div>
+                        <div
+                            style={{
+                                flex: 1,
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "20px",
+                            }}
+                        >
+                            <StatCardg
+                                title="Closed PRs"
+                                value={`${prInsights.closed_prs} `}
+                            />
+
+                            <StatCard
+                                title="Open PRs"
+                                value={`${prInsights.open_prs} `}
+                            />
+                        </div>
+                        <div
+                            style={{
+                                flex: 1,
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "20px",
+                            }}
+                        >
+                            <StatCard
+                                title="Average Merge Time"
+                                value={`${prInsights.average_merge_time_hours} hours`}
+                            />
+
+                            <StatCardg
+                                title="Average Close Time"
+                                value={`${prInsights.average_close_time_hours} hours`}
+                            />
+                        </div>
+                        <div
+                            style={{
+                                flex: 2,
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "20px",
+                            }}
+                        >
+                            <StatCardg
+                                title="Total PRs"
+                                value={`${prInsights.total_prs} `}
+                            />
+
+                            <StatCard
+                                title="Merged PRs"
+                                value={`${prInsights.merged_prs} `}
+                            />
+                        </div>
+                      
+                    </div>
                     <h2>
                     Issue Analytics
                     </h2>
@@ -206,20 +297,47 @@ function DashboardPage() {
                     <IssueBanner
                         data={issueInsights}
                     />
-
-                    <h2>
-                    PR Analytics
-                    </h2>
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "stretch",
+                        }}
+                    >
+                        <div
+                            style={{
+                                flex: 2,
+                                padding: "20px"
+                            }}
+                        >
+                        <IssueChart
+                            data={IssueTrendData}
+                        />
                     
-                    <PRBanner
-                        data={prInsights}
-                    />
-
+                    </div>
+                    <div
+                            style={{
+                                flex: 1,
+                                padding: "20px"
+                            }}
+                        >
+                        <IssuePieChart
+                            data={issueInsights}
+                        />
+                    
+                    </div>
+                   
                     </div>
 
-            
-
-        </div>
+                    <h2> Health analytics</h2>
+            <HealthBar
+                score={
+                    health?.health_score || 0
+                }
+            />
+            <HealthSection
+            health={health}/>
+                    
+            </div>        
     );
 }
 
