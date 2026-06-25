@@ -127,7 +127,7 @@ function DashboardPage() {
                 >
                     <div
                         style={{
-                            flex: 1.5,
+                            flex: 1,
                             padding: "20px"
                         }}
                     >
