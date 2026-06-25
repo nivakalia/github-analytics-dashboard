@@ -59,7 +59,7 @@ A full-stack GitHub Analytics Dashboard that collects repository data using the 
 ## Health Analytics
 
 
-![Health](images/healthanalytics.png)
+![Health](screenshots/healthanalytics.png)
 
 ---
 
