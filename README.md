@@ -22,7 +22,6 @@ A full-stack GitHub Analytics Dashboard that collects repository data using the 
 
 ## Search page
 
-> Add screenshot here
 
 ![Releases](screenshots/search.png)
 
@@ -31,7 +30,6 @@ A full-stack GitHub Analytics Dashboard that collects repository data using the 
 
 ## Home Page
 
-> Add screenshot here
 
 ![Home](screenshots/home.png)
 
@@ -39,7 +37,6 @@ A full-stack GitHub Analytics Dashboard that collects repository data using the 
 
 ## Commit Analytics
 
-> Add screenshot here
 
 ![Commits](screenshots/committrend.png)
 
@@ -47,7 +44,6 @@ A full-stack GitHub Analytics Dashboard that collects repository data using the 
 
 ## Pull Request Analytics
 
-> Add screenshot here
 
 ![PR Analytics](screenshots/pranalytics.png)
 
@@ -55,7 +51,6 @@ A full-stack GitHub Analytics Dashboard that collects repository data using the 
 
 ## Issue Analytics
 
-> Add screenshot here
 
 ![Issues](screenshots/issueanalytics.png)
 
@@ -63,7 +58,6 @@ A full-stack GitHub Analytics Dashboard that collects repository data using the 
 
 ## Health Analytics
 
-> Add screenshot here
 
 ![Health](images/healthanalytics.png)
 
