@@ -33,6 +33,7 @@ def repository_activity(owner: str,repo: str,db: Session = Depends(get_db)):
         commit_date = datetime.fromisoformat(commit.commit_date.replace("Z","+00:00"))
         month = commit_date.strftime("%Y-%m")
         monthly_trend[month] = (monthly_trend.get(month, 0)+ 1)
+        monthly_trend_ordered = dict(reversed(monthly_trend.items()))
         print(commit.commit_date)
         if commit_date >= last_30_days:
             recent_commits += 1
@@ -47,7 +48,7 @@ def repository_activity(owner: str,repo: str,db: Session = Depends(get_db)):
         "total_commits": total_commits,
         "active_contributors":active_contributors,
         "commits_last_30_days":recent_commits,
-        "monthly_commit_trend":monthly_trend,
+        "monthly_commit_trend":monthly_trend_ordered,
         "activity_level": activity_level,
         "development_summary": summary
     }
@@ -110,6 +111,8 @@ def issue_insights(owner: str,repo: str,db: Session = Depends(get_db)):
         created = datetime.fromisoformat(issue.created_at.replace("Z","+00:00"))
         month = created.strftime("%Y-%m")
         monthly_trend[month] = (monthly_trend.get(month, 0)+ 1)
+        monthly_trend_ordered = dict(reversed(monthly_trend.items()))
+
         if issue.state == "open":
             open_issues += 1
         else:
@@ -128,7 +131,7 @@ def issue_insights(owner: str,repo: str,db: Session = Depends(get_db)):
         "open_issues":open_issues,
         "resolved_issues":resolved_issues,
         "average_resolution_hours":round(average_resolution_hours,2),
-        "monthly_issue_trend":monthly_trend
+        "monthly_issue_trend":monthly_trend_ordered
     }
 
 @router.get("/analytics/contributors/{owner}/{repo}")

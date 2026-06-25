@@ -24,7 +24,7 @@ function PRPieChart({ data }) {
 
     return (
 
-        <PieChart width={400} height={300}>
+        <PieChart width={420} height={300}>
             <Pie
                 data={chartData}
                 dataKey="value"

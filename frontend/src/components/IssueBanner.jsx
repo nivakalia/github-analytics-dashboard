@@ -14,28 +14,40 @@ function IssueBanner({ data }) {
         
             <div
                 style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(4, 1fr)",
-                    gap: "20px"
+                    display: "flex",
+                    gap: "20px",
+                    fontSize: 20
                 }}
             >
 
-            <div>
+            <div
+                style={{
+                    flex: 1,
+                    padding: "20px"}}>
                 <h4>Total Issues</h4>
                 <p>{data.total_issues}</p>
             </div>
 
-            <div>
+            <div
+                style={{
+                    flex: 1,
+                    padding: "20px"}}>
                 <h4>Open Issues</h4>
                 <p>{data.open_issues}</p>
             </div>
 
-            <div>
+            <div
+                style={{
+                    flex: 1,
+                    padding: "20px"}}>
                 <h4>Resolved Issues</h4>
                 <p>{data.resolved_issues}</p>
             </div>
 
-            <div>
+            <div
+                style={{
+                    flex: 1,
+                    padding: "20px"}}>
                 <h4>Avg Resolution Time</h4>
                 <p>
                     {data.average_resolution_hours}

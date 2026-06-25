@@ -8,7 +8,7 @@ import {
 function ContributorPieChart({ data }) {
     const COLORS = ["#5CA829","#335E17","#bdea81","#8AD657","#488320"];
     return (
-        <PieChart width={500} height={350}>
+        <PieChart width={600} height={350}>
             <Pie
                 data={data}
                 dataKey="contributions"

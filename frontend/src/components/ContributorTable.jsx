@@ -4,8 +4,8 @@ function ContributorTable({ contributors }) {
 
         <div
             style={{
-                maxWidth: "500px",
-                padding: "30px"
+                maxWidth: "700px",
+                padding: "10px"
             }}
         >
             <table
