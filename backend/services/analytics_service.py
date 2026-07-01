@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from fastapi import Depends
 from rep_service import get_repository
 from database import get_db
-from models import Commit, PullRequest, Issue, Contributor
+from models import Repository, Commit, PullRequest, Issue, Contributor
 from datetime import datetime, timedelta, timezone
 
 def get_repository_activity(owner: str,repo: str,db: Session = Depends(get_db)):
@@ -22,6 +22,10 @@ def get_repository_activity(owner: str,repo: str,db: Session = Depends(get_db)):
             recent_commits += 1
     return {
         "repository": repo,
+        "description":Repository.description,
+        "forks":Repository.forks,
+        "stars":Repository.stars,
+        "watchers":Repository.watchers,
         "total_commits": total_commits,
         "active_contributors":active_contributors,
         "commits_last_30_days":recent_commits,

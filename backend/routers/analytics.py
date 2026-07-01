@@ -45,6 +45,10 @@ def repository_activity(owner: str,repo: str,db: Session = Depends(get_db)):
 )
     return {
         "repository": repo,
+        "description":repo_data.description,
+        "forks":repo_data.forks,
+        "stars":repo_data.stars,
+        "watchers":repo_data.watchers,
         "total_commits": total_commits,
         "active_contributors":active_contributors,
         "commits_last_30_days":recent_commits,
@@ -107,6 +111,7 @@ def issue_insights(owner: str,repo: str,db: Session = Depends(get_db)):
     total_resolution_time = 0
     resolved_count = 0
     monthly_trend = {}
+    monthly_trend_ordered={}
     for issue in issues:
         created = datetime.fromisoformat(issue.created_at.replace("Z","+00:00"))
         month = created.strftime("%Y-%m")

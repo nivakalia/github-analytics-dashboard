@@ -1,10 +1,10 @@
 import { Cell } from "recharts";
 
 function SummaryBanner({
-    health,
     commits,
-    contributors,
-    openIssues
+    stars,
+    forks,
+    watchers
 }) {
 
     return (
@@ -28,15 +28,7 @@ function SummaryBanner({
                     
                 }}
             >
-                <div
-                        style={{
-                            flex: 1,
-                            padding: "20px"}}
-                    >
-                    <h4>Health Score</h4>
-                    <p>{health}</p>
-                </div>
-
+                
                 <div
                         style={{
                             flex: 1,
@@ -49,16 +41,24 @@ function SummaryBanner({
                         style={{
                             flex: 1,
                             padding: "20px"}}>
-                    <h4>Contributors</h4>
-                    <p>{contributors}</p>
+                    <h4>Stargazers</h4>
+                    <p>{stars}</p>
                 </div>
 
                 <div
                         style={{
                             flex: 1,
                             padding: "20px"}}>
-                    <h4>Open Issues</h4>
-                    <p>{openIssues}</p>
+                    <h4>Forks</h4>
+                    <p>{forks}</p>
+                </div>
+
+                <div
+                        style={{
+                            flex: 1,
+                            padding: "20px"}}>
+                    <h4>Watchers</h4>
+                    <p>{watchers}</p>
                 </div>
 
             </div>

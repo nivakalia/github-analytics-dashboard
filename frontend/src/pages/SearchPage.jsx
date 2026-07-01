@@ -52,8 +52,29 @@ function SearchPage() {
     };
 
     return (
-        <div>
-
+        <div
+        style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "100vh",
+            flexDirection: "column"
+          }}
+        >
+            <div
+            style={{
+                background: "#D7F1C6",
+                display: "flex",
+                height:"300px",
+                width:"500px",
+                padding: "20px",
+                borderRadius: "12px",
+                marginBottom: "30px",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column"
+            }}
+        >
             <h1>GitHub Analytics Dashboard</h1>
 
             <div>
@@ -69,7 +90,7 @@ function SearchPage() {
                 />
 
             </div>
-
+                    <h2></h2>
             <div>
 
                 <label>Repository</label>
@@ -83,11 +104,11 @@ function SearchPage() {
                 />
 
             </div>
-
+            <h2></h2>
             <button onClick={handleAnalyze}>
                 Analyze Repository
             </button>
-
+        </div>
         </div>
     );
 }

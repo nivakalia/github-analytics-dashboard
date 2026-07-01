@@ -78,12 +78,33 @@ function DashboardPage() {
             }}>
             <h1>{owner}/{repo}</h1>
             <h2>Dashboard</h2>
+            <div
+                style={{
+                    display: "grid",
+                    placeItems: "center",
+                    background: "#f5f5f5",
+                    borderRadius: "12px"}}
+            >
+                <h3>Owner: {owner}</h3>      
+            </div>
+            <h2></h2>
+            <div
+                style={{
+                    display: "grid",
+                    placeItems: "center",
+                    background: "#f5f5f5",
+                    borderRadius: "12px"}}
+            >
+                <h3>Description: {repoActivity?.description}</h3>      
+            </div>
+            <h2></h2>
             <SummaryBanner
-                health={health?.health_score}
                 commits={repoActivity?.total_commits}
-                contributors={contributors?.total_contributors}
-                openIssues={issueInsights?.open_issues}
+                stars={repoActivity?.stars}
+                forks={repoActivity?.forks}
+                watchers={repoActivity?.watchers}
             />
+
             <h2>Contributor Insights</h2>
             <div
                 style={{
