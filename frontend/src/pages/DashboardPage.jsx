@@ -101,7 +101,7 @@ function DashboardPage() {
                         fontSize: "16px"
                     }}
                 >
-                    {"Back"}
+                    {"← Back to Search"}
                 </button>
             <h1>{owner}/{repo}</h1>
             <h2>Dashboard</h2>
