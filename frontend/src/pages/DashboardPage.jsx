@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 import api from "../services/api";
 import CommitChart from "../charts/CommitChart";
 import ContributorTable from "../components/ContributorTable";
@@ -14,6 +16,7 @@ import StatCard from "../components/StatCard";
 import StatCardg from "../components/StatCardg";
 import HealthSection from "../components/HealthSection";
 
+
 function DashboardPage() {
     const { owner, repo } = useParams();
     const [health, setHealth] = useState(null);
@@ -23,7 +26,18 @@ function DashboardPage() {
     const [prInsights, setPR] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-
+    const navigate = useNavigate();
+    const goBack = async () => {
+        try {
+            navigate(`..`);}
+        catch (error) {
+            console.error(error);
+            alert(
+                error.response?.data?.message ||
+                "failed."
+            );
+        }
+    };
     useEffect(() => {
         const fetchDashboard = async () => {
             try {
@@ -75,6 +89,20 @@ function DashboardPage() {
                 margin: "0 auto",
                 padding: "30px"
             }}>
+            <button
+                    onClick={goBack}
+                    disabled={loading}
+                    style={{
+                        width: "100%",
+                        padding: "14px",
+                        borderRadius: "10px",
+                        background: "#D7F1C6",
+                        color: "black",
+                        fontSize: "16px"
+                    }}
+                >
+                    {"Back"}
+                </button>
             <h1>{owner}/{repo}</h1>
             <h2>Dashboard</h2>
             <div
