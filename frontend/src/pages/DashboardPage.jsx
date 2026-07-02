@@ -50,7 +50,6 @@ function DashboardPage() {
                 setIssueInsights(issueRes.data);
                 setContributors(contributorRes.data);
                 setPR(prRes.data);
-
             } catch (error) {
                 console.error(error);
                 setError("Failed to load dashboard");
@@ -104,7 +103,6 @@ function DashboardPage() {
                 forks={repoActivity?.forks}
                 watchers={repoActivity?.watchers}
             />
-
             <h2>Contributor Insights</h2>
             <div
                 style={{
@@ -112,14 +110,12 @@ function DashboardPage() {
                     gridTemplateColumns: "repeat(2, 1fr)",
                     gap: "0px"
                 }}>
-
                 <ContributorPieChart
                     data={contributors.top_contributors}
                 />
                 <ContributorTable
                     contributors={contributors.top_contributors}
                 />
-            
             </div>
                 <h2>Commit Trend</h2>
                 <div
@@ -138,7 +134,6 @@ function DashboardPage() {
                     <h3>Overall Development Summary</h3>
                     <p>{repoActivity?.development_summary}</p>
                 </div>
-
                 <h2>PR Analytics</h2>
                 <div
                     style={{
@@ -236,5 +231,4 @@ function DashboardPage() {
         </div>        
     );
 }
-
 export default DashboardPage;

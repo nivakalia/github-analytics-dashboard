@@ -9,8 +9,6 @@ function StatCard({ title, value }) {
                 background: "#f5f5f5",
                 alignContent:"center",
                 borderRadius: "12px"
-
-
             }}
         >
             <h3>{title}</h3>
@@ -18,5 +16,4 @@ function StatCard({ title, value }) {
         </div>
     );
 }
-
 export default StatCard;

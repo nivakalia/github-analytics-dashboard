@@ -10,8 +10,6 @@ function IssueBanner({ data }) {
                 marginBottom: "30px"
             }}
         >
-
-        
             <div
                 style={{
                     display: "flex",
@@ -19,7 +17,6 @@ function IssueBanner({ data }) {
                     fontSize: 20
                 }}
             >
-
             <div
                 style={{
                     flex: 1,
@@ -27,7 +24,6 @@ function IssueBanner({ data }) {
                 <h4>Total Issues</h4>
                 <p>{data.total_issues}</p>
             </div>
-
             <div
                 style={{
                     flex: 1,
@@ -35,7 +31,6 @@ function IssueBanner({ data }) {
                 <h4>Open Issues</h4>
                 <p>{data.open_issues}</p>
             </div>
-
             <div
                 style={{
                     flex: 1,
@@ -43,7 +38,6 @@ function IssueBanner({ data }) {
                 <h4>Resolved Issues</h4>
                 <p>{data.resolved_issues}</p>
             </div>
-
             <div
                 style={{
                     flex: 1,

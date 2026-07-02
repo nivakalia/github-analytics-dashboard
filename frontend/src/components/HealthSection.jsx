@@ -1,10 +1,7 @@
 
 import StatCardg from "./StatCardg";
 function HealthSection({ health }) {
-
     return (
-        
-
         <div
             style={{
                 //padding: "25px",
@@ -12,7 +9,6 @@ function HealthSection({ health }) {
                 marginTop: "30px",
             }}
         >
-
             <div
                 style={{
                     display: "grid",
@@ -21,16 +17,11 @@ function HealthSection({ health }) {
                     placeItems: "center",
                     background: "#f5f5f5",
                     borderRadius: "12px"
-
                 }}
             >
-                
                 <h2>Status : {health.status}</h2>
-                  
                 <h2> Release Frequency: {health.release_frequency}</h2>
-                   
             </div>
-
             <div
                 style={{
                     marginTop: "25px"
@@ -56,16 +47,9 @@ function HealthSection({ health }) {
                 <StatCardg
                     title={"Contributor Score"}
                     value={health.metrics.contributor_score}/>
-                
-                
                 </div>
-
             </div>
-
         </div>
-
     );
-
 }
-
 export default HealthSection;

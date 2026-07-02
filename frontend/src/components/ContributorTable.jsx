@@ -15,9 +15,7 @@ function ContributorTable({ contributors }) {
                     textAlign: "left"
                 }}
             >
-
                 <thead>
-
                     <tr
                         style={{
                             backgroundColor: "#D7F1C6"
@@ -30,7 +28,6 @@ function ContributorTable({ contributors }) {
                         >
                             Rank
                         </th>
-
                         <th
                             style={{
                                 padding: "12px"
@@ -38,7 +35,6 @@ function ContributorTable({ contributors }) {
                         >
                             Contributor
                         </th>
-
                         <th
                             style={{
                                 padding: "12px"
@@ -46,7 +42,6 @@ function ContributorTable({ contributors }) {
                         >
                             Contributions
                         </th>
-
                         <th
                             style={{
                                 padding: "12px"
@@ -54,16 +49,12 @@ function ContributorTable({ contributors }) {
                         >
                             Share
                         </th>
-
                     </tr>
-
                 </thead>
-
                 <tbody>
 
                     {contributors.map(
                         (person, index) => (
-
                         <tr
                             key={person.login}
                             style={{
@@ -78,7 +69,6 @@ function ContributorTable({ contributors }) {
                             >
                                 {index + 1}
                             </td>
-
                             <td
                                 style={{
                                     padding: "12px",
@@ -87,7 +77,6 @@ function ContributorTable({ contributors }) {
                             >
                                 {person.login}
                             </td>
-
                             <td
                                 style={{
                                     padding: "12px"
@@ -95,7 +84,6 @@ function ContributorTable({ contributors }) {
                             >
                                 {person.contributions.toLocaleString()}
                             </td>
-
                             <td
                                 style={{
                                     padding: "12px"
@@ -103,17 +91,11 @@ function ContributorTable({ contributors }) {
                             >
                                 {person.percentage}%
                             </td>
-
                         </tr>
-
                     ))}
-
                 </tbody>
-
             </table>
-
         </div>
     );
 }
-
 export default ContributorTable;

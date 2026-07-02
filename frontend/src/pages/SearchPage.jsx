@@ -1,116 +1,135 @@
 import { useState } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
+
 function SearchPage() {
 
     const [owner, setOwner] = useState("");
     const [repo, setRepo] = useState("");
+    const [loading, setLoading] = useState(false);
+
     const navigate = useNavigate();
     const handleAnalyze = async () => {
-        console.log("BUTTON CLICKED");
-        
-        try {
-    
-            await api.post(
-                `/ingest/fetch/${owner}/${repo}`
-            );
-    
-            await api.post(
-                `/ingest/fetch-commits/${owner}/${repo}`
-            );
-    
-            await api.post(
-                `/ingest/fetch-prs/${owner}/${repo}`
-            );
-    
-            await api.post(
-                `/ingest/fetch-issues/${owner}/${repo}`
-            );
-    
-            await api.post(
-                `/ingest/fetch-contributors/${owner}/${repo}`
-            );
-    
-            await api.post(
-                `/ingest/fetch-releases/${owner}/${repo}`
-            );
-    
-            navigate(
-                `/dashboard/${owner}/${repo}`
-              );
-    
-        } catch(error) {
+        if (!owner.trim() || !repo.trim()) {
+            alert("Please enter both owner and repository.");
+            return;
+        }
+        setLoading(true);
 
+        try {
+            const response = await api.post(`/ingest/analyze/${owner}/${repo}`);
+            setTimeout(() => {navigate(`/dashboard/${owner}/${repo}`);}, 800);
+        } catch (error) {
             console.error(error);
-        
-            console.log(error.response);
-        
-            console.log(error.response?.data);
-        
-            alert("Analysis failed");
+            alert(
+                error.response?.data?.message ||
+                "Analysis failed."
+            );
+            setLoading(false);
         }
     };
-
     return (
         <div
-        style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            minHeight: "100vh",
-            flexDirection: "column"
-          }}
-        >
-            <div
             style={{
-                background: "#D7F1C6",
                 display: "flex",
-                height:"300px",
-                width:"500px",
-                padding: "20px",
-                borderRadius: "12px",
-                marginBottom: "30px",
                 justifyContent: "center",
                 alignItems: "center",
-                flexDirection: "column"
+                minHeight: "100vh",
+                flexDirection: "column",
+                background: "#f5f5f5"
             }}
         >
-            <h1>GitHub Analytics Dashboard</h1>
+            <div
+                style={{
+                    width: "550px",
+                    background: "#D7F1C6",
+                    padding: "35px",
+                    borderRadius: "15px",
+                }}
+            >
+                <h1
+                    style={{
+                        textAlign: "center",
+                        marginBottom: "30px"
+                    }}
+                >
+                    GitHub Analytics Dashboard
+                </h1>
 
-            <div>
+                <div
+                    style={{
+                        marginBottom: "20px"
+                    }}
+                >
 
-                <label>Owner</label>
+                    <label
+                        style={{
+                            fontWeight: "bold"
+                        }}
+                    >
+                        Repository Owner
+                    </label>
 
-                <input
-                    type="text"
-                    value={owner}
-                    onChange={(e) =>
-                        setOwner(e.target.value)
-                    }
-                />
+                    <input
+                        type="text"
+                        value={owner}
+                        disabled={loading}
+                        onChange={(e) =>
+                            setOwner(e.target.value)
+                        }
+                        style={{
+                            width: "100%",
+                            padding: "10px",
+                            borderRadius: "8px",
+                        }}
+                    />
 
+                </div>
+
+                <div
+                    style={{
+                        marginBottom: "25px"
+                    }}
+                >
+                    <label
+                        style={{
+                            fontWeight: "bold"
+                        }}
+                    >
+                        Repository Name
+                    </label>
+
+                    <input
+                        type="text"
+                        value={repo}
+                        disabled={loading}
+                        onChange={(e) =>setRepo(e.target.value)}
+                        style={{
+                            width: "100%",
+                            padding: "10px",
+                            borderRadius: "8px",
+                        }}
+                    />
+
+                </div>
+
+                <button
+                    onClick={handleAnalyze}
+                    disabled={loading}
+                    style={{
+                        width: "100%",
+                        padding: "14px",
+                        borderRadius: "10px",
+                        background: loading? "#9CA3AF": "#15803D",
+                        color: "white",
+                        fontSize: "16px",
+                        cursor:loading? "not-allowed": "pointer"
+                    }}
+                >
+                    {loading ? "Analyzing Repository...": "Analyze Repository"}
+                </button>
             </div>
-                    <h2></h2>
-            <div>
-
-                <label>Repository</label>
-
-                <input
-                    type="text"
-                    value={repo}
-                    onChange={(e) =>
-                        setRepo(e.target.value)
-                    }
-                />
-
-            </div>
-            <h2></h2>
-            <button onClick={handleAnalyze}>
-                Analyze Repository
-            </button>
-        </div>
         </div>
     );
 }
-
 export default SearchPage;

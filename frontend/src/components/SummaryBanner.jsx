@@ -1,14 +1,5 @@
-import { Cell } from "recharts";
-
-function SummaryBanner({
-    commits,
-    stars,
-    forks,
-    watchers
-}) {
-
+function SummaryBanner({commits,stars,forks,watchers}) {
     return (
-
         <div
             style={{
                 background: "#D7F1C6",
@@ -17,8 +8,6 @@ function SummaryBanner({
                 marginBottom: "3px"
             }}
         >
-
-        
             <div
                 style={{
                     display: "flex",
@@ -27,8 +16,7 @@ function SummaryBanner({
                     fontSize: 20,
                     
                 }}
-            >
-                
+            > 
                 <div
                         style={{
                             flex: 1,
@@ -60,11 +48,8 @@ function SummaryBanner({
                     <h4>Watchers</h4>
                     <p>{watchers}</p>
                 </div>
-
             </div>
-
         </div>
     );
 }
-
 export default SummaryBanner;

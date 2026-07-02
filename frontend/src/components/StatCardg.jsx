@@ -9,7 +9,6 @@ function StatCardg({ title, value }) {
                 background: "#D7F1C6",
                 alignContent:"center",
                 borderRadius: "12px"
-
             }}
         >
             <h3>{title}</h3>
@@ -17,5 +16,4 @@ function StatCardg({ title, value }) {
         </div>
     );
 }
-
 export default StatCardg;

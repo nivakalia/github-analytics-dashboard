@@ -17,7 +17,6 @@ function ContributorPieChart({ data }) {
                 label
             >
                 {data.map((entry, index) => (
-
                     <Cell
                         key={index}
                         fill={COLORS[index % COLORS.length]}
@@ -30,5 +29,4 @@ function ContributorPieChart({ data }) {
 
     );
 }
-
 export default ContributorPieChart;

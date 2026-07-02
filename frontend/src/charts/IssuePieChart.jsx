@@ -8,25 +8,11 @@ import {
 
 function IssuePieChart({ data }) {
     const chartData = [
-        {
-            name: "Open",
-            value: data.open_issues
-        },
-        {
-            name: "Resolved",
-            value: data.resolved_issues
-        }
-    ];
-
-    const COLORS = [
-        "#335e17", // orange
-        "#5CA829"  // green
-    ];
-
+        {name: "Open",value: data.open_issues},
+        {name: "Resolved",value: data.resolved_issues}];
+    const COLORS = ["#335e17", "#5CA829" ];
     return (
-
         <PieChart width={400} height={300}>
-
             <Pie
                 data={chartData}
                 dataKey="value"
@@ -34,24 +20,16 @@ function IssuePieChart({ data }) {
                 outerRadius={100}
                 label
             >
-
                 {chartData.map((entry, index) => (
-
                     <Cell
                         key={index}
                         fill={COLORS[index]}
                     />
-
                 ))}
-
             </Pie>
-
             <Tooltip />
             <Legend />
-
         </PieChart>
-
     );
 }
-
 export default IssuePieChart;
