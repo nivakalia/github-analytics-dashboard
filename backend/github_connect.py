@@ -4,7 +4,7 @@ import requests
 
 BASE_URL = "https://api.github.com"
 
-HEADERS = {"Authorization":"Bearer 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"}
+HEADERS = {"Authorization":[enter token]}
 
 def get_commits(owner, repo):
     all_commits = []
