@@ -216,6 +216,10 @@ cd github-analytics-dashboard
 cd backend
 
 python -m venv venv
+
+```
+```
+edit github_connect.py to include your personal access token in the URL header
 ```
 
 Activate virtual environment
