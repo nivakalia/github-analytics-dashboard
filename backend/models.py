@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import declarative_base
 from sqlalchemy import ForeignKey
+from datetime import datetime, timezone
 
 Base = declarative_base()
 
@@ -19,6 +20,7 @@ class Repository(Base):
     created_at = Column(String)
     updated_at = Column(String)
     pushed_at = Column(String)
+    last_synced = Column(String)
 
 class Commit(Base):
     __tablename__ = "commits"

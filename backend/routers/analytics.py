@@ -4,7 +4,7 @@ from fastapi import Depends
 
 from rep_service import get_repository
 from database import get_db
-from models import Repository, Commit, PullRequest, Issue, Contributor, Release
+from models import Commit, PullRequest, Issue, Contributor, Release
 from datetime import datetime, timedelta, timezone
 
 router = APIRouter()
@@ -19,6 +19,7 @@ def repository_activity(owner: str,repo: str,db: Session = Depends(get_db)):
     last_30_days = datetime.now(timezone.utc) - timedelta(days=30)
     recent_commits = 0
     monthly_trend = {}
+    monthly_trend_ordered={}
     if recent_commits > 500:
         activity_level = "Very High"
     elif recent_commits > 100:

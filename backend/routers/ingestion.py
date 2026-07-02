@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from sqlalchemy.orm import Session
 from fastapi import Depends
-
+from datetime import datetime, timezone
 from rep_service import get_repository
 from github_connect import get_repo
 from database import get_db
@@ -9,6 +9,7 @@ from models import Repository, Commit, PullRequest, Issue, Contributor, Release
 from github_connect import get_commits, get_pull_requests, get_issues, get_contributors, get_releases
 
 router = APIRouter(prefix="/ingest",tags=["Ingestion"])
+
 @router.post("/fetch/{owner}/{repo}")
 def fetch_repository(owner: str,repo: str,db: Session = Depends(get_db)):
     data = get_repo(owner, repo)
@@ -27,7 +28,8 @@ def fetch_repository(owner: str,repo: str,db: Session = Depends(get_db)):
         default_branch=data["default_branch"],
         created_at=data["created_at"],
         updated_at=data["updated_at"],
-        pushed_at=data["pushed_at"]
+        pushed_at=data["pushed_at"],
+        last_synced=datetime.now(timezone.utc).isoformat()
     )
     existing_repo = db.query(Repository).filter(Repository.id == data["id"]).first()
     if existing_repo:
@@ -177,3 +179,39 @@ def fetch_releases(owner: str,repo: str,db: Session = Depends(get_db)):
         count += 1
     db.commit()
     return {"message":"Releases saved","saved":count}
+
+@router.post("/analyze/{owner}/{repo}")
+def analyze_repository(owner: str,repo: str,db: Session = Depends(get_db)):
+    repo_data = get_repository(db, owner, repo)
+    if repo_data:
+        last_sync = datetime.fromisoformat(repo_data.last_synced)
+        hours = (datetime.now(timezone.utc) - last_sync).total_seconds() / 3600
+        if hours < 24:
+            return {
+                "message":"Repository already cached",
+                "cached":True
+            }
+        print("Refreshing old repository...")
+        fetch_commits(owner, repo, db)
+        fetch_prs(owner, repo, db)
+        fetch_issues(owner, repo, db)
+        fetch_contributors(owner, repo, db)
+        fetch_releases(owner, repo, db)
+
+        repo_data.last_synced = datetime.now(timezone.utc).isoformat()
+        db.commit()
+        return {
+            "message":"Repository refreshed",
+            "cached":False
+        }
+        
+    else:
+        fetch_repository(owner, repo, db)
+        fetch_commits(owner, repo, db)
+        fetch_prs(owner, repo, db)
+        fetch_issues(owner, repo, db)
+        fetch_contributors(owner, repo, db)
+        fetch_releases(owner, repo, db)
+
+        return{"message": "Repository analysed",
+               "cached":False }

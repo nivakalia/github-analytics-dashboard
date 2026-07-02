@@ -6,6 +6,8 @@ from routers.ingestion import router as ingestion_router
 from routers.analytics import router as analytics_router
 
 app = FastAPI()
+
+from services.scheduler import scheduler 
 app.add_middleware(
     CORSMiddleware,
 
@@ -19,6 +21,7 @@ app.add_middleware(
 
     allow_headers=["*"]
 )
+
 
 app.include_router(repository_router)
 
