@@ -339,6 +339,3 @@ GitHub: https://github.com/nivakalia
 
 ---
 
-# License
-
-This project is intended for educational purposes and internship learning.
