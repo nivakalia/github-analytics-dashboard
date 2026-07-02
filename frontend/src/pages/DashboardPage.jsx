@@ -98,7 +98,8 @@ function DashboardPage() {
                         borderRadius: "10px",
                         background: "#D7F1C6",
                         color: "black",
-                        fontSize: "16px"
+                        fontSize: "16px",
+                        cursor: "pointer"
                     }}
                 >
                     {"← Back to Search"}
