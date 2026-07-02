@@ -35,7 +35,6 @@ def repository_activity(owner: str,repo: str,db: Session = Depends(get_db)):
         month = commit_date.strftime("%Y-%m")
         monthly_trend[month] = (monthly_trend.get(month, 0)+ 1)
         monthly_trend_ordered = dict(reversed(monthly_trend.items()))
-        print(commit.commit_date)
         if commit_date >= last_30_days:
             recent_commits += 1
     summary = (

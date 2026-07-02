@@ -36,7 +36,6 @@ function SearchPage() {
                 alignItems: "center",
                 minHeight: "100vh",
                 flexDirection: "column",
-                background: "#f5f5f5"
             }}
         >
             <div
