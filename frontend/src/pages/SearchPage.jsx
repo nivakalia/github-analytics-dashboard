@@ -6,27 +6,37 @@ function SearchPage() {
 
     const [owner, setOwner] = useState("");
     const [repo, setRepo] = useState("");
+
     const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
     const handleAnalyze = async () => {
+
         if (!owner.trim() || !repo.trim()) {
             alert("Please enter both owner and repository.");
             return;
         }
+
         setLoading(true);
 
         try {
-            const response = await api.post(`/ingest/analyze/${owner}/${repo}`);
-            setTimeout(() => {navigate(`/dashboard/${owner}/${repo}`);}, 800);
+
+            const response = await api.post(
+                `/ingest/analyze/${owner}/${repo}`
+            );
+
+            setTimeout(() => {
+                navigate(`/dashboard/${owner}/${repo}`);
+            }, 800);
+
         } catch (error) {
             console.error(error);
             alert(
-                error.response?.data?.message ||
-                "Analysis failed."
+                error.response?.data?.message || error.response?.data?.detail ||"Analysis failed."
             );
             setLoading(false);
         }
+
     };
     return (
         <div
@@ -36,8 +46,10 @@ function SearchPage() {
                 alignItems: "center",
                 minHeight: "100vh",
                 flexDirection: "column",
+                background: "#f5f5f5"
             }}
         >
+
             <div
                 style={{
                     width: "550px",
@@ -46,6 +58,7 @@ function SearchPage() {
                     borderRadius: "15px",
                 }}
             >
+
                 <h1
                     style={{
                         textAlign: "center",
@@ -79,6 +92,7 @@ function SearchPage() {
                         style={{
                             width: "100%",
                             padding: "10px",
+                            marginTop: "8px",
                             borderRadius: "8px",
                         }}
                     />
@@ -106,6 +120,7 @@ function SearchPage() {
                         style={{
                             width: "100%",
                             padding: "10px",
+                            marginTop: "8px",
                             borderRadius: "8px",
                         }}
                     />
@@ -118,6 +133,7 @@ function SearchPage() {
                     style={{
                         width: "100%",
                         padding: "14px",
+                        border: "none",
                         borderRadius: "10px",
                         background: loading? "#9CA3AF": "#15803D",
                         color: "white",
@@ -125,10 +141,18 @@ function SearchPage() {
                         cursor:loading? "not-allowed": "pointer"
                     }}
                 >
-                    {loading ? "Analyzing Repository...": "Analyze Repository"}
+                    {
+                        loading ? "Analyzing Repository...": "Analyze Repository"
+                    }
+
                 </button>
+
             </div>
+
         </div>
+
     );
+
 }
+
 export default SearchPage;
